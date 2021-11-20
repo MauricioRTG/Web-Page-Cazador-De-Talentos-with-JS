@@ -357,19 +357,19 @@ function RegistrarCazador()
     HTML_expr += "</div><br/><h1>Registrarse como Cazador de Talentos</h1>";
 
     HTML_expr += "<form><p><label for='Nombre'>Nombre Completo</label>:";
-    HTML_expr += "<input type='text' name='book[title]' id='Nombre'/></p>";
+    HTML_expr += "<input type='text' name='book[Nombre]' id='Nombre'/></p>";
 
     HTML_expr += "<p><label for='receiver-email'>Correo electrónico</label>:";
-    HTML_expr += "<input type='email' name='book[price]' id='receiver-email'/></p>";
+    HTML_expr += "<input type='email' name='book[receiver-email]' id='receiver-email'/></p>";
 
     HTML_expr += "<p><label for='Contrasena'>Contraseña</label>:";
-    HTML_expr += "<input type='password' name='book[price]' id='contrasena'/></p>";
+    HTML_expr += "<input type='password' name='book[contrasena]' id='contrasena'/></p>";
 
     HTML_expr += "<p><label for='Empresa'>Empresa</label>:";
-    HTML_expr += "<input type='text' name='book[price]' id='Empresa'/></p>";
+    HTML_expr += "<input type='text' name='book[Empresa]' id='Empresa'/></p>";
 
     HTML_expr += "<p><label for='Direccion'>Direccion</label>:";
-    HTML_expr += "<input type='text' name='book[price]' id='Direccion'/></p>";
+    HTML_expr += "<input type='text' name='book[Direccion]' id='Direccion'/></p>";
 
     HTML_expr += "<input type='button' value='Clear'/>";
     HTML_expr += "<input type='submit' value='Enviar'/></form>";
