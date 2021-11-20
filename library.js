@@ -72,8 +72,6 @@ app.listen(8080, function() { console.log("Running Express"); });
 /*-----------------------------------------------------------------------------
  * model section
  *----------------------------------------------------------------------------*/
-//SpeedDating (sessión que tiene varios talentos registrados)
-//Paara el proyecto al iniciar la reunión se registra el proyecto de la reunion de la que se realizó
 var LIBRARY = (function() {
     var box = {};
     var subjects = ['Physics', 'Mathematics', 'Chemistry', 'Psychology', 'Geography'];
@@ -162,6 +160,159 @@ var BOOK = (function(t, p, s, d) {
         updateBook: function(t, p, s, d) { LIBRARY.update(t,this); initialize(t, p, s, d); }
     }
 });
+
+var PROYECTO = (function(n, d, nu, c) {
+    PROYECTO.counter = (PROYECTO.counter || 1);
+    var id = PROYECTO.counter;
+    
+    var nombre_proyecto;
+    var descripcion;
+    var numero_tarjeta;
+    var codigo;
+    
+    function initialize(n, d, nu, c) {
+        nombre_proyecto = n;
+        descripcion = d;
+        numero_tarjeta = nu;
+
+        if(isNaN(codigo)) { throw "codigo invalido"; }
+        if(isNaN(numero_tarjeta)) { throw "Numero de tarjeta invalido!"; }
+        if(!nombre_proyecto || nombre_proyecto.length === 0) { throw "Nombre invalido!"; }
+    }
+    
+    initialize(n, d, nu, c);
+    PROYECTO.counter ++; // sólo se incrementa si la inicialización tiene éxito
+    
+    return {
+        getId: function() { return id; },
+        getNombreProyecto: function() { return title; },
+        getDescripcion: function() { return description; },
+        getNumeroTarjeta: function() { return numero_tarjeta; },
+        getNumeroCodigo: function() { return codigo; }
+    }
+});
+
+var USUARIO = (function(){
+    var usuarios = [];
+
+    return{
+        getUsers: function() { return usuarios; },
+        addUsuario: function() { usuarios.push(a); },
+    }
+})();
+
+var CAZADOR= (function(n, c, con, e, d) {
+    CAZADOR.counter = (CAZADOR.counter || 1);
+    var id = CAZADOR.counter;
+    
+    var nombre;
+    var correo;
+    var contraseña;
+    var empresa;
+    var direccion;
+    var reputacion;
+    var avgReputacion;
+    
+    function initialize(n, c, con, e, d) {
+        nombre = n;
+        correo = c;
+        contraseña = con;
+        empresa = e;
+        direccion = d;
+        reputacion = 0;
+        avgReputacion = 0;
+
+        if(!contraseña || contraseña.length === 0) { throw "Contraseña invalida!"; }
+        if(!nombre || nombre.length === 0) { throw "Nombre invalido!"; }
+    }
+    
+    initialize(n, c, con, e, d);
+    CAZADOR.counter ++; // sólo se incrementa si la inicialización tiene éxito
+    
+    return {
+        getId: function() { return id; },
+        getNombre: function() { return nombre; },
+        getCorreo: function() { return correo; },
+        getContraseña: function() { return contraseña},
+        getEmpresa: function() { return empresa; },
+        getDireccion: function() { return direccion; },
+        setReputacion: function(b) { reputacion = reputacion + b; 
+                                     avgReputacion = (reputacion / 5); }
+    }
+});
+
+var TALENTO= (function(n, c, con, a, c, dis, dir, cos) {
+    TALENTO.counter = (TALENTO.counter || 1);
+    var id = TALENTO.counter;
+    
+    var nombre;
+    var correo;
+    var contraseña;
+    var actividad_Profesional;
+    var capacidades;
+    var disponibilidad;
+    var direccion;
+    var costo;
+
+    
+    function initialize(n, c, con, a, c, dis, dir, cos) {
+        nombre = n;
+        correo = c;
+        contraseña = con;
+        actividad_Profesional = a;
+        capacidades = c;
+        disponibilidad  = dis;
+        direccion = dir;
+        costo = cos;
+
+        if(isNaN(costo)) { throw "costo invalido"; }
+        if(!contraseña || contraseña.length === 0) { throw "Contraseña invalida!"; }
+        if(!nombre || nombre.length === 0) { throw "Nombre invalido!"; }
+    }
+    
+    initialize(n, c, con, a, c, dis, dir, cos);
+    TALENTO.counter ++; // sólo se incrementa si la inicialización tiene éxito
+    
+    return {
+        getId: function() { return id; },
+        getNombre: function() { return nombre; },
+        getCorreo: function() { return correo; },
+        getContraseña: function() { return contraseña},
+        getActividadprofesional: function() { return actividad_Profesional; },
+        getCapacidades: function() { return capacidades; },
+        getDisponibilidad: function() { return disponibilidad; },
+        getDireccion: function() { return direccion; },
+        getCosto: function() { return costo;}
+    }
+});
+
+var CONTRATO= (function(c, p , t) {
+    CONTRATO.counter = (CONTRATO.counter || 1);
+    var id = CONTRATO.counter;
+    
+    var cazador;
+    var proyecto;
+    var talento;
+
+    
+    function initialize(c, p , t) {
+        cazador = c;
+        proyecto = p;
+        talento = t;
+        
+    }
+    
+    initialize(n, c, con, a, c, dis, dir, cos);
+    CONTRATO.counter ++; // sólo se incrementa si la inicialización tiene éxito
+    
+    return {
+        getId: function() { return id; },
+        getCazador: function() { return cazador;},
+        getProyecto: function() {return proyecto;},
+        getTalento: function() {return talento;}
+    }
+});
+
 
 /*-----------------------------------------------------------------------------
  * view section
