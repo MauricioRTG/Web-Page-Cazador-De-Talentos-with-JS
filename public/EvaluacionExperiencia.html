@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link type="text/css" rel="stylesheet" href="main.css">
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Cazadores de Talentos</h1>
+            <ul class="nav">
+                <li><a href="RegistrarProveedor.html">Registrarse como Talento</a></li>
+                <li><a href="RegistrarCazador.html">Registrarse como Cazador</a></li>
+                <li><a href="historialReputacion.html">Historial</a></li>
+                <li><a href="SpeedDating.html">Speed dating</a></li>
+                <li><a href="AnunciarProyecto.html">Anunciar proyecto</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <h2>Evaluación de experiencia</h2>
+            <label for="experiencia">¿Cuál fue tu experiencia? (Del 1 al 5)</label>
+            <input type="text" id="experiencia" style="width : 2cm">
+            <input type="submit" value="Enviar" onclick="send(document.getElementById('receiver-email').value, document.getElementById('email-subject').value, document.getElementById('email-content').value, document.getElementById('delivery-receipt').value)">
+        </div>
+    </body>
+</html>
