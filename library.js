@@ -310,7 +310,7 @@ function EvaluacionExperiencia()
     HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Historial</a></li>";
     HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
     HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
-
+    
     HTML_expr = "<br/><h1>Evaluación de experiencia</h1>";
 
     HTML_expr += "<form><p><label for='experiencia'>¿Cuál fue tu experiencia? (Del 1 al 5)</label>:";
@@ -332,7 +332,7 @@ function HistorialReputacion()
     HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
     HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
 
-    HTML_expr = "<br/><h1>Historial</h1>";
+    HTML_expr += "<br/><h1>Historial</h1>";
     HTML_expr += "<ul class='referencias-historial>";
     HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Reputación en el tiempo</a></li>";
     HTML_expr += "<li><a href='/speedDating/HistorialGiros'>Historial de giros</a></li></ul>";
@@ -363,7 +363,7 @@ function HistorialGiros()
     HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
     HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
 
-    HTML_expr = "<br/><h1>Historial</h1>";
+    HTML_expr += "<br/><h1>Historial</h1>";
     HTML_expr += "<ul class='referencias-historial>";
     HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Reputación en el tiempo</a></li>";
     HTML_expr += "<li><a href='/speedDating/HistorialGiros'>Historial de giros</a></li></ul>";
@@ -382,7 +382,7 @@ function speedDating()
     HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
     HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
 
-    HTML_expr = "<br/><h1>Speed Dating</h1>";
+    HTML_expr += "<br/><h1>Speed Dating</h1>";
     
     
     //ToDO: Poner los nombres, actividad profesional y correos de personas de talentos que se registraron.
