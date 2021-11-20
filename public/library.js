@@ -57,8 +57,9 @@ function reset( form )
     EDIT = undefined;
     form.trigger('reset');
     
-    $("#books_title").attr("value", "");
-    $("#books_price").attr("value", "");
-    $("#books_subject").val(undefined);
-    $("#books_description").text( "" );
+    $("#Nombre").attr("value", "");
+    $("#receiver-email").attr("value", "");
+    $("#contrasena").attr("value", "");
+    $("#Empresa").attr("value", "");
+    $("#Direccion").attr("value", "");
 }

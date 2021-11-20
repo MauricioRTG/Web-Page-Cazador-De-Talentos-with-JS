@@ -193,11 +193,17 @@ var PROYECTO = (function(n, d, nu, c) {
 });
 
 var USUARIO = (function(){
-    var usuarios = [];
+    var cazadores = [];
+    var talentos = [];
+    var proyectos = [];
 
     return{
-        getUsers: function() { return usuarios; },
-        addUsuario: function() { usuarios.push(a); },
+        getCazadores: function() { return cazadores; },
+        addCazadores: function(b) { cazadores.push(a); },
+        getTalentos: function() { return talentos; },
+        addTalentos: function(b) { talentos.push(a); },
+        getProyectos: function() { return talentos; },
+        addProyectos: function(b) { talentos.push(a); },
     }
 })();
 
@@ -357,7 +363,7 @@ function RegistrarCazador()
     HTML_expr += "<input type='email' name='book[price]' id='receiver-email'/></p>";
 
     HTML_expr += "<p><label for='Contrasena'>Contraseña</label>:";
-    HTML_expr += "<input type='text' name='book[price]' id='contrasena'/></p>";
+    HTML_expr += "<input type='password' name='book[price]' id='contrasena'/></p>";
 
     HTML_expr += "<p><label for='Empresa'>Empresa</label>:";
     HTML_expr += "<input type='text' name='book[price]' id='Empresa'/></p>";
@@ -543,20 +549,17 @@ function speedDating()
 function listBooks()
 {
     var HTML_expr = "<ul id='books'>";
-    var books = LIBRARY.getBooks();
+    var cazadores = USUARIO.getCazadores();
     
-    for(var i=0; i < books.length; i++) {
-        HTML_expr += listBook(books[i]);
+    for(var i=0; i < cazadores.length; i++) {
+        HTML_expr += listBook(cazadores[i]);
     }
     return HTML_expr + "</ul>";
 }
 
 function listBook( b )
 {
-    var HTML_expr = "<li><a href='/books/show?id=" + b.getId() + "'>" + b.getTitle() + "</a>";
-    
-    HTML_expr += " <u class='button' onclick='edit(" + b.getId() + ")'><b>Edit</b></u>";
-    HTML_expr += " <u class='button' onclick='drop(" + b.getId() + ")'><b>Delete</b></u></li>";
+    var HTML_expr = "<li>" + b.getId() + "'>" + b.getNombre() + "</li>";
     
     return HTML_expr;
 }
