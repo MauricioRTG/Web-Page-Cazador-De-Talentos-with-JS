@@ -12,15 +12,35 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.get('/', function(request, response) {
-    response.redirect(301,'/books/list');
+    response.redirect(301,'/speedDating/RegistrarCazador');
 });
 
-app.get('/books/list', function(request, response) {
-    response.send( html_page(list()) );
+app.get('/speedDating/RegistrarCazador', function(request, response) {
+    response.send( html_page(RegistrarCazador()) );
 });
 
-app.get('/books/show', function(request, response) {
-    response.send( html_page(showBook(request.query.id)) );
+app.get('/speedDating/RegistrarProveedor', function(request, response) {
+    response.send( html_page(RegistrarProveedor()) );
+});
+
+app.get('/speedDating/EvaluacionExperiencia', function(request, response) {
+    response.send( html_page(EvaluacionExperiencia()) );
+});
+
+app.get('/speedDating/AnunciarProyecto', function(request, response) {
+    response.send( html_page(AnunciarProyecto()) );
+});
+
+app.get('/speedDating/SpeedDating', function(request, response) {
+    response.send( html_page(speedDating()) );
+});
+
+app.get('/speedDating/HistorialGiros', function(request, response) {
+    response.send( html_page(HistorialGiros()) );
+});
+
+app.get('/speedDating/HistorialReputacion', function(request, response) {
+    response.send( html_page(HistorialReputacion()) );
 });
 
 app.get('/books/show_subject', function(request, response) {
@@ -153,28 +173,30 @@ function html_page( content )
     
     HTML_expr += "<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>";
     HTML_expr += "<meta http-equiv='Content-Language' content='en-us'/>";
-    HTML_expr += "<title>Library Info System</title>";
+    HTML_expr += "<title>Cazador de Talentos</title>";
     HTML_expr += "<link type='text/css' rel='stylesheet' href='/library.css'>";
     HTML_expr += "<script src='/library.js'></script>";
     HTML_expr += "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>";
     HTML_expr += "</head><body id='library' onLoad='registerEvents()'>";
-    HTML_expr += "<div id='container'><div id='header'><h1>Library Info System</h1>";
-    HTML_expr += "<h3>Implemented using JavaScript and Node</h3></div><div id='content'>";
+    HTML_expr += "<div id='container'><div id='header'><h1>Cazador de Talentos</h1>";
+    HTML_expr += "</div><div id='content'>";
     HTML_expr += content + "</div><div id='sidebar'></div></div></body></html>";
     
     return HTML_expr;
 }
 
-function list()
+function RegistrarCazador()
 {
     var HTML_expr = "<ul id='subjects'>";
     
-    for(var i = 0; i < LIBRARY.getSubjects().length; i++) {
-        HTML_expr += "<li><a href='/books/show_subject?id=" + i + "'>";
-        HTML_expr += LIBRARY.getSubjects()[i] + "</a></li>";
-    }
+    HTML_expr += "<li><a href='/speedDating/RegistrarCazador'>Registrar Cazador</a></li>";
+    HTML_expr += "<li><a href='/speedDating/RegistrarProveedor'>Registrar Proveedor</a></li>";
+    HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Historial</a></li>";
+    HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
+    HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
     
-    HTML_expr += "</ul><div id='list'>" + listBooks();
+    
+    HTML_expr += "<div id='list'>" + listBooks();
     HTML_expr += "</div><br/><h1>Registrarse como Cazador de Talentos</h1>";
 
     HTML_expr += "<form><p><label for='Nombre'>Nombre Completo</label>:";
@@ -202,12 +224,13 @@ function RegistrarProveedor()
 {
     var HTML_expr = "<ul id='subjects'>";
     
-    for(var i = 0; i < LIBRARY.getSubjects().length; i++) {
-        HTML_expr += "<li><a href='/books/show_subject?id=" + i + "'>";
-        HTML_expr += LIBRARY.getSubjects()[i] + "</a></li>";
-    }
+    HTML_expr += "<li><a href='/speedDating/RegistrarCazador'>Registrar Cazador</a></li>";
+    HTML_expr += "<li><a href='/speedDating/RegistrarProveedor'>Registrar Proveedor</a></li>";
+    HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Historial</a></li>";
+    HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
+    HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
     
-    HTML_expr += "</ul><div id='list'>" + listBooks();
+    HTML_expr += "<div id='list'>" + listBooks();
     HTML_expr += "</div><br/><h1>Registro de Proveedor de Talentos</h1>";
 
     HTML_expr += "<form><p><label for='Nombre'>Nombre Completo</label>:";
@@ -225,9 +248,7 @@ function RegistrarProveedor()
     HTML_expr += "<p><label for='Capacidades'>Capacidades</label><br/>";
     HTML_expr += "<textarea name='book[description]' id='Capacidades'></textarea></p>";
     
-    HTML_expr += "<p><label for='book_subject'>Subject</label>:";
-    HTML_expr += "<select name='book[subject]' id='books_subject'>";
-
+    HTML_expr += "<label for='Disponibilidad'>Disponibilidad</label><br>";
     HTML_expr += "<input type='checkbox' name='Disponibilidad' value='1'>Lunes<br>";
     HTML_expr += "<input type='checkbox' name='Disponibilidad' value='2'>Martes<br>";
     HTML_expr += "<input type='checkbox' name='Disponibilidad' value='3'>Miercoles<br>";
@@ -250,15 +271,16 @@ function RegistrarProveedor()
 
 function AnunciarProyecto()
 {
-    //Se ponen los proyectos registrados.
+    
     var HTML_expr = "<ul id='subjects'>";
     
-    for(var i = 0; i < LIBRARY.getSubjects().length; i++) {
-        HTML_expr += "<li><a href='/books/show_subject?id=" + i + "'>";
-        HTML_expr += LIBRARY.getSubjects()[i] + "</a></li>";
-    }
-    
-    HTML_expr += "</ul><div id='list'>" + listBooks();
+    HTML_expr += "<li><a href='/speedDating/RegistrarCazador'>Registrar Cazador</a></li>";
+    HTML_expr += "<li><a href='/speedDating/RegistrarProveedor'>Registrar Proveedor</a></li>";
+    HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Historial</a></li>";
+    HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
+    HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
+    //Se ponen los proyectos registrados.
+    HTML_expr += "<div id='list'>" + listBooks();
     HTML_expr += "</div><br/><h1>Anunciar Proyecto</h1>";
 
     HTML_expr += "<form><p><label for='NombreProyecto'>Nombre del Proyecto</label>:";
@@ -281,7 +303,15 @@ function AnunciarProyecto()
 
 function EvaluacionExperiencia()
 {
-    var HTML_expr = "<br/><h1>Evaluación de experiencia</h1>";
+    var HTML_expr = "<ul id='subjects'>";
+    
+    HTML_expr += "<li><a href='/speedDating/RegistrarCazador'>Registrar Cazador</a></li>";
+    HTML_expr += "<li><a href='/speedDating/RegistrarProveedor'>Registrar Proveedor</a></li>";
+    HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Historial</a></li>";
+    HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
+    HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
+
+    HTML_expr = "<br/><h1>Evaluación de experiencia</h1>";
 
     HTML_expr += "<form><p><label for='experiencia'>¿Cuál fue tu experiencia? (Del 1 al 5)</label>:";
     HTML_expr += "<input type='text' name='book[title]' id='experiencia' style='width : 2cm'/></p>";
@@ -294,15 +324,23 @@ function EvaluacionExperiencia()
 
 function HistorialReputacion()
 {
-    var HTML_expr = "<br/><h1>Historial</h1>";
+    var HTML_expr = "<ul id='subjects'>";
+    
+    HTML_expr += "<li><a href='/speedDating/RegistrarCazador'>Registrar Cazador</a></li>";
+    HTML_expr += "<li><a href='/speedDating/RegistrarProveedor'>Registrar Proveedor</a></li>";
+    HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Historial</a></li>";
+    HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
+    HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
+
+    HTML_expr = "<br/><h1>Historial</h1>";
     HTML_expr += "<ul class='referencias-historial>";
-    HTML_expr += "<li><a href='historialReputacion.html'>Reputación en el tiempo</a></li>";
-    HTML_expr += "<li><a href='historialGiros.html'>Historial de giros</a></li></ul>";
+    HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Reputación en el tiempo</a></li>";
+    HTML_expr += "<li><a href='/speedDating/HistorialGiros'>Historial de giros</a></li></ul>";
     HTML_expr += "<h3>Promedios de reputación al mes:</h3>";
     HTML_expr += "<ul><li>Enero: 2.8</li>";
     HTML_expr += "<li>Febrero: 3.4</li>";
     HTML_expr += "<li>Marzo: 4.1</li>";
-    HTML_expr += "<li>Abril: 3.6</li>;"
+    HTML_expr += "<li>Abril: 3.6</li>"
     HTML_expr += "<li>Mayo:  3.3</li>";
     HTML_expr += "<li>Junio: 3.4</li>";
     HTML_expr += "<li>Julio: 3.0</li>";
@@ -317,18 +355,34 @@ function HistorialReputacion()
 
 function HistorialGiros()
 {
-    var HTML_expr = "<br/><h1>Historial</h1>";
+    var HTML_expr = "<ul id='subjects'>";
+    
+    HTML_expr += "<li><a href='/speedDating/RegistrarCazador'>Registrar Cazador</a></li>";
+    HTML_expr += "<li><a href='/speedDating/RegistrarProveedor'>Registrar Proveedor</a></li>";
+    HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Historial</a></li>";
+    HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
+    HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
+
+    HTML_expr = "<br/><h1>Historial</h1>";
     HTML_expr += "<ul class='referencias-historial>";
-    HTML_expr += "<li><a href='historialReputacion.html'>Reputación en el tiempo</a></li>";
-    HTML_expr += "<li><a href='historialGiros.html'>Historial de giros</a></li></ul>";
+    HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Reputación en el tiempo</a></li>";
+    HTML_expr += "<li><a href='/speedDating/HistorialGiros'>Historial de giros</a></li></ul>";
     
     //ToDO: Poner los nombres, actividad profesional y correos de personas con quienes iniciaron un contrato y en que proyecto.
     return HTML_expr;
 }
 
-function SeedDating()
+function speedDating()
 {
-    var HTML_expr = "<br/><h1>Speed Dating</h1>";
+    var HTML_expr = "<ul id='subjects'>";
+    
+    HTML_expr += "<li><a href='/speedDating/RegistrarCazador'>Registrar Cazador</a></li>";
+    HTML_expr += "<li><a href='/speedDating/RegistrarProveedor'>Registrar Proveedor</a></li>";
+    HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Historial</a></li>";
+    HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
+    HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
+
+    HTML_expr = "<br/><h1>Speed Dating</h1>";
     
     
     //ToDO: Poner los nombres, actividad profesional y correos de personas de talentos que se registraron.
