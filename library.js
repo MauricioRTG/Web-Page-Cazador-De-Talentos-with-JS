@@ -43,141 +43,43 @@ app.get('/speedDating/HistorialReputacion', function(request, response) {
     response.send( html_page(HistorialReputacion()) );
 });
 
-app.get('/books/show_subject', function(request, response) {
-    response.send( html_page(showSubject(request.query.id)) );
-});
-
-app.route('/books/update')
-
-   .get(function(request, response) {
-        var id = request.query.id;
-        
-        response.send({ title: LIBRARY.getBook(id).getTitle(),
-                        price: LIBRARY.getBook(id).getPrice(),
-                        subject: LIBRARY.getSubjectIndex(LIBRARY.getBook(id).getSubject()),
-                        description: LIBRARY.getBook(id).getDescription() });
-    })
+app.route('/speedDating/update')
 
    .put(function(request, response) {
         response.send( update(request) );
     });
 
-app.delete('/books/delete', function(request, response) {
-    LIBRARY.remove( LIBRARY.getBook(request.query.id) );
-    response.send( listBooks() );
-});
+app.route('/speedDating/Enviarproyecto')
+
+   .put(function(request, response) {
+        response.send( updateProyecto(request) );
+    });
+
 
 app.listen(8080, function() { console.log("Running Express"); });
 
 /*-----------------------------------------------------------------------------
  * model section
  *----------------------------------------------------------------------------*/
-var LIBRARY = (function() {
-    var box = {};
-    var subjects = ['Physics', 'Mathematics', 'Chemistry', 'Psychology', 'Geography'];
-    
-    return {
-        getSubjects: function() { return subjects; },
-        getSubjectIndex: function( s ) { return subjects.indexOf(s); },
-        getBook: function( i ) { return box[i]; },
-        
-        getPosition: function( id ) {
-            var keys = Object.keys(box);
-            
-            for(var k = 0; k < keys.length; k++) {
-                if(keys[k] === id) {
-                   return { index: k, title: box[keys[k]].getTitle() };
-                }
-            }
-            throw "INTERNAL ERROR: Book " + id + " does not exist!";
-        },
-        
-        getBooks: function() {
-            var list = [];
-            var keys = Object.keys(box);
-            
-            for(var k = 0; k < keys.length; k++) {
-                if(!isNaN( keys[k] )) { list.push(box[ keys[k] ]); }
-            }
-            return list;
-        },
-        
-        add: function( b ) {
-            if(box[b.getTitle()] === undefined) {
-               box[b.getId()] = b;
-               box[b.getTitle()] = b;
-            } else {
-               throw "This title already exists!";
-            }
-        },
-               
-        update: function( n, b ) { // si el título fue actualizado, actualiza "box"
-            if(box[n] === undefined) {
-               delete box[b.getTitle()];
-               box[n] = b;
-            }
-        },
-        
-        remove: function( b ) {
-            delete box[b.getId()];
-            delete box[b.getTitle()];
-        },
-               
-               test: function() { return box;}
-    }
-})();
-//Para cazador, talento, proyecto, contrato
-var BOOK = (function(t, p, s, d) {
-    BOOK.counter = (BOOK.counter || 1);
-    var id = BOOK.counter;
-    
-    var title;
-    var price;
-    var subject;
-    var description;
-    var created_at;
-    
-    function initialize(t, p, s, d) {
-        title = t;
-        price = parseFloat(p);
-        subject = LIBRARY.getSubjects().includes(s) ? s : null;
-        description = d;
-        created_at = new Date();
-        if(isNaN(price)) { throw "Invalid price!"; }
-        if(!title || title.length === 0) { throw "Invalid title!"; }
-    }
-    
-    initialize(t, p, s, d);
-    BOOK.counter ++; // sólo se incrementa si la inicialización tiene éxito
-    
-    return {
-        getId: function() { return id; },
-        getTitle: function() { return title; },
-        getPrice: function() { return price; },
-        getSubject: function() { return subject; },
-        getDescription: function() { return description; },
-        getCreatedAt: function() { return created_at; },
-        updateBook: function(t, p, s, d) { LIBRARY.update(t,this); initialize(t, p, s, d); }
-    }
-});
 
 var PROYECTO = (function(n, d, nu, c) {
     PROYECTO.counter = (PROYECTO.counter || 1);
     var id = PROYECTO.counter;
     
-    var nombre_proyecto;
+    var Nombre;
     var descripcion;
     var numero_tarjeta;
     var codigo;
     
     function initialize(n, d, nu, c) {
-        nombre_proyecto = n;
+        Nombre = n;
         descripcion = d;
         numero_tarjeta = nu;
+        codigo = c;
 
         if(isNaN(codigo)) { throw "codigo invalido"; }
         if(isNaN(numero_tarjeta)) { throw "Numero de tarjeta invalido!"; }
-        if(!nombre_proyecto || nombre_proyecto.length === 0) { throw "Nombre invalido!"; }
+        if(!Nombre || Nombre.length === 0) { throw "Nombre invalido!"; }
     }
     
     initialize(n, d, nu, c);
@@ -185,8 +87,8 @@ var PROYECTO = (function(n, d, nu, c) {
     
     return {
         getId: function() { return id; },
-        getNombreProyecto: function() { return title; },
-        getDescripcion: function() { return description; },
+        getNombre: function() { return Nombre; },
+        getDescripcion: function() { return descripcion; },
         getNumeroTarjeta: function() { return numero_tarjeta; },
         getNumeroCodigo: function() { return codigo; }
     }
@@ -202,8 +104,8 @@ var USUARIO = (function(){
         addCazadores: function(a) { cazadores.push(a); return a;},
         getTalentos: function() { return talentos; },
         addTalentos: function(a) { talentos.push(a); return a},
-        getProyectos: function() { return talentos;},
-        addProyectos: function(a) { talentos.push(a); return a },
+        getProyectos: function() { return proyectos;},
+        addProyectos: function(a) { proyectos.push(a); return a },
     }
 })();
 
@@ -242,6 +144,7 @@ var CAZADOR= (function(n, c, con, e, d) {
         getContraseña: function() { return contraseña},
         getEmpresa: function() { return empresa; },
         getDireccion: function() { return direccion; },
+        getAvgReputación: function() {return avgReputacion; },
         setReputacion: function(b) { reputacion = reputacion + b; 
                                      avgReputacion = (reputacion / 5); }
     }
@@ -259,8 +162,9 @@ var TALENTO= (function(n, c, con, a, c, dis, dir, cos) {
     var disponibilidad;
     var direccion;
     var costo;
+    var reputacion;
+    var avgReputacion;
 
-    
     function initialize(n, c, con, a, c, dis, dir, cos) {
         nombre = n;
         correo = c;
@@ -270,15 +174,16 @@ var TALENTO= (function(n, c, con, a, c, dis, dir, cos) {
         disponibilidad  = dis;
         direccion = dir;
         costo = cos;
-
+        reputacion = 0;
+        avgReputacion = 0;
         if(isNaN(costo)) { throw "costo invalido"; }
         if(!contraseña || contraseña.length === 0) { throw "Contraseña invalida!"; }
         if(!nombre || nombre.length === 0) { throw "Nombre invalido!"; }
     }
-    
+
     initialize(n, c, con, a, c, dis, dir, cos);
     TALENTO.counter ++; // sólo se incrementa si la inicialización tiene éxito
-    
+
     return {
         getId: function() { return id; },
         getNombre: function() { return nombre; },
@@ -288,7 +193,10 @@ var TALENTO= (function(n, c, con, a, c, dis, dir, cos) {
         getCapacidades: function() { return capacidades; },
         getDisponibilidad: function() { return disponibilidad; },
         getDireccion: function() { return direccion; },
-        getCosto: function() { return costo;}
+        getCosto: function() { return costo;},
+        getAvgReputación: function() {return avgReputacion; },
+        setReputacion: function(b) { reputacion = reputacion + b; 
+                                     avgReputacion = (reputacion / 5); }
     }
 });
 
@@ -353,10 +261,10 @@ function RegistrarCazador()
     HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
     
     
-    HTML_expr += "<div id='list'>" + listBooks();
+    HTML_expr += "<div id='list'>" + listCazadores();
     HTML_expr += "</div><br/><h1>Registrarse como Cazador de Talentos</h1>";
 
-    HTML_expr += "<form><p><label for='Nombre'>Nombre Completo</label>:";
+    HTML_expr += "<form id='Cazador'><p><label for='Nombre'>Nombre Completo</label>:";
     HTML_expr += "<input type='text' name='book[Nombre]' id='Nombre'/></p>";
 
     HTML_expr += "<p><label for='receiver-email'>Correo electrónico</label>:";
@@ -387,10 +295,10 @@ function RegistrarProveedor()
     HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
     HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
     
-    HTML_expr += "<div id='list'>" + listBooks();
+    HTML_expr += "<div id='list'>" + listProyectos();
     HTML_expr += "</div><br/><h1>Registro de Proveedor de Talentos</h1>";
 
-    HTML_expr += "<form><p><label for='Nombre'>Nombre Completo</label>:";
+    HTML_expr += "<form id='Talento'><p><label for='Nombre'>Nombre Completo</label>:";
     HTML_expr += "<input type='text' name='book[title]' id='Nombre'/></p>";
 
     HTML_expr += "<p><label for='receiver-email'>Correo electrónico</label>:";
@@ -437,20 +345,20 @@ function AnunciarProyecto()
     HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
     HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
     //Se ponen los proyectos registrados.
-    HTML_expr += "<div id='list'>" + listBooks();
+    HTML_expr += "<div id='list'>" + listProyectos();
     HTML_expr += "</div><br/><h1>Anunciar Proyecto</h1>";
 
-    HTML_expr += "<form><p><label for='NombreProyecto'>Nombre del Proyecto</label>:";
-    HTML_expr += "<input type='text' name='book[title]' id='NombreProyecto'/></p>";
+    HTML_expr += "<form id='Proyecto'><p><label for='Nombre'>Nombre del Proyecto</label>:";
+    HTML_expr += "<input type='text' name='book[Nombre]' id='Nombre'/></p>";
 
     HTML_expr += "<p><label for='Descripcion'>Descripcion del proyecto</label><br/>";
-    HTML_expr += "<textarea name='book[description]' id='Descripcion'></textarea></p>";
+    HTML_expr += "<textarea name='book[Descripcion]' id='Descripcion'></textarea></p>";
 
     HTML_expr += "<p><label for='Tarjeta'>Numero de tarjeta</label>:";
-    HTML_expr += "<input type='text' name='book[price]' id='Tarjeta'/></p>";
+    HTML_expr += "<input type='text' name='book[Tarjeta]' id='Tarjeta'/></p>";
 
     HTML_expr += "<p><label for='Codigo'>Codigo de seguridad</label>:";
-    HTML_expr += "<input type='text' name='book[price]' id='Codigo'/></p>";
+    HTML_expr += "<input type='text' name='book[Codigo]' id='Codigo'/></p>";
 
     HTML_expr += "<input type='button' value='Clear'/>";
     HTML_expr += "<input type='submit' value='Enviar'/></form>";
@@ -468,7 +376,7 @@ function EvaluacionExperiencia()
     HTML_expr += "<li><a href='/speedDating/AnunciarProyecto'>Anunciar Proyecto</a></li>";
     HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
     
-    HTML_expr = "<br/><h1>Evaluación de experiencia</h1>";
+    HTML_expr += "<br/><h1>Evaluación de experiencia</h1>";
 
     HTML_expr += "<form><p><label for='experiencia'>¿Cuál fue tu experiencia? (Del 1 al 5)</label>:";
     HTML_expr += "<input type='text' name='book[title]' id='experiencia' style='width : 2cm'/></p>";
@@ -490,9 +398,7 @@ function HistorialReputacion()
     HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
 
     HTML_expr += "<br/><h1>Historial</h1>";
-    HTML_expr += "<ul class='referencias-historial>";
-    HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Reputación en el tiempo</a></li>";
-    HTML_expr += "<li><a href='/speedDating/HistorialGiros'>Historial de giros</a></li></ul>";
+    HTML_expr += "<li><a href='/speedDating/HistorialGiros'>Historial de giros</a></li> <li><a href='/speedDating/HistorialReputacion'>Reputación en el tiempo</a></li>";
     HTML_expr += "<h3>Promedios de reputación al mes:</h3>";
     HTML_expr += "<ul><li>Enero: 2.8</li>";
     HTML_expr += "<li>Febrero: 3.4</li>";
@@ -521,11 +427,11 @@ function HistorialGiros()
     HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
 
     HTML_expr += "<br/><h1>Historial</h1>";
-    HTML_expr += "<ul class='referencias-historial>";
-    HTML_expr += "<li><a href='/speedDating/HistorialReputacion'>Reputación en el tiempo</a></li>";
-    HTML_expr += "<li><a href='/speedDating/HistorialGiros'>Historial de giros</a></li></ul>";
+    HTML_expr += "<li><a href='/speedDating/HistorialGiros'>Historial de giros</a></li> <li><a href='/speedDating/HistorialReputacion'>Reputación en el tiempo</a></li>";
+    HTML_expr += "<p>Manuel Domínguez -  Especialista en Marketing Digital <br> Contacto: manuel@hootmail.com</p>";
+    HTML_expr += "<p>Benito Pérez-  Creador de Videojuegos <br> Contacto: benito@hootmail.com</p>";
+    HTML_expr += "<p>Santiago Velazco -  Desarrollador de páginas Web  <br> Contacto: santiago@hootmail.com</p>";
     
-    //ToDO: Poner los nombres, actividad profesional y correos de personas con quienes iniciaron un contrato y en que proyecto.
     return HTML_expr;
 }
 
@@ -540,59 +446,51 @@ function speedDating()
     HTML_expr += "<li><a href='/speedDating/SpeedDating'>Speed Dating</a></li></ul>";
 
     HTML_expr += "<br/><h1>Speed Dating</h1>";
+    HTML_expr += "<p>Manuel Domínguez -  Especialista en Marketing Digital  <a href='/speedDating/EvaluacionExperiencia'>Ingresar Reunión</a></li><br> Contacto: manuel@hootmail.com</p>";
+    HTML_expr += "<p>Benito Pérez-  Creador de Videojuegos  <a href='/speedDating/EvaluacionExperiencia'>Ingresar Reunión</a></li><br> Contacto: benito@hootmail.com</p>";
+    HTML_expr += "<p>Santiago Velazco -  Desarrollador de páginas Web  <a href='/speedDating/EvaluacionExperiencia'>Ingresar Reunión</a></li><br> Contacto: santiago@hootmail.com</p>";
+
     
-    
-    //ToDO: Poner los nombres, actividad profesional y correos de personas de talentos que se registraron.
     return HTML_expr;
 }
 
-function listBooks()
+function listCazadores()
 {
     var HTML_expr = "<ul id='books'>";
     var cazadores = USUARIO.getCazadores();
     
     for(var i=0; i < cazadores.length; i++) {
-        HTML_expr += listBook(cazadores[i]);
+        HTML_expr += listCazador(cazadores[i]);
     }
     return HTML_expr + "</ul>";
 }
 
-function listBook( b )
+
+function listProyectos()
+{
+    var HTML_expr = "<ul id='books'>";
+    var proyectos = USUARIO.getProyectos();
+    
+    for(var i=0; i < proyectos.length; i++) {
+        HTML_expr += listProyecto(proyectos[i]);
+    }
+    return HTML_expr + "</ul>";
+}
+
+function listCazador( b )
 {
     var HTML_expr = "<li>" + b.getId() + "'>" + b.getNombre() + "</li>";
     
     return HTML_expr;
 }
 
-function showBook( id )
+function listProyecto( b )
 {
-    var HTML_expr = "<h1>" + LIBRARY.getBook(id).getTitle() + "</h1>";
+    var HTML_expr = "<li>" + b.getId() + "'>" + b.getNombre() + "</li>";
     
-    HTML_expr += "<p><strong>Price: </strong>$";
-    HTML_expr += LIBRARY.getBook(id).getPrice() + "<br/>";
-    HTML_expr += "<strong>Subject: </strong><a href='/books/show_subject?id=";
-    HTML_expr += LIBRARY.getSubjectIndex(LIBRARY.getBook(id).getSubject()) + "'>";
-    HTML_expr += LIBRARY.getBook(id).getSubject() + "</a><br/>";
-    HTML_expr += "<strong>Created Date: </strong>";
-    HTML_expr += LIBRARY.getBook(id).getCreatedAt() + "<br/></p>";
-    HTML_expr += "<p>" + LIBRARY.getBook(id).getDescription() + "</p><hr/>";
-    
-    return HTML_expr + "<a href='/books/list'>Back</a>";
+    return HTML_expr;
 }
 
-function showSubject( s )
-{
-    var HTML_expr = "<h1>" + LIBRARY.getSubjects()[s] + "</h1><ul>";
-    var books = LIBRARY.getBooks();
-    
-    for(var i=0; i < books.length; i++) {
-        if(books[i].getSubject() == LIBRARY.getSubjects()[s]) {
-            HTML_expr += "<li><a href='/books/show?id=" + books[i].getId() + "'>";
-            HTML_expr += books[i].getTitle() + "</a></li>";
-        }
-    }
-    return HTML_expr + "</ul><a href='/books/list'>Back</a>";
-}
 
 function update( request )
 {
@@ -604,6 +502,19 @@ function update( request )
     
     if( request.query.id === "undefined" ) {
        return USUARIO.addCazadores(CAZADOR(n, c, con, e, d));
+        
+    }
+}
+
+function updateProyecto( request )
+{
+    var n = request.body.proyecto.nombre;
+    var d = request.body.proyecto.description;
+    var nu = request.body.proyecto.numero_tarjeta;
+    var c = request.body.proyecto.codigo;
+    
+    if( request.query.id === "undefined" ) {
+       return USUARIO.addProyectos(PROYECTO(n, d, nu, c));
         
     }
 }

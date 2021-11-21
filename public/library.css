@@ -63,3 +63,16 @@ ul#subjects li {
    display: inline;
    padding-left: 10px;
 }
+
+ul#referenciasHistorial{
+   width: 700px;
+   text-align: center;
+   padding: 5px;
+   background-color: #ececec;
+   border: 1px solid #ccc;
+   margin-bottom: 20px;
+}
+
+ul#referenciasHistorial li {
+   display: inline;
+}

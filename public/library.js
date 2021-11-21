@@ -1,32 +1,6 @@
 
 var EDIT = undefined;
 
-function edit( id )
-{
-    EDIT = id;
-    
-    $.ajax({type: 'GET', url: '/books/update?id=' + id}).done(function(book) {
-        $("#books_title").attr("value", book.title);
-        $("#books_price").attr("value", book.price);
-        $("#books_subject").val(book.subject);
-        $("#books_description").text(book.description);
-    });
-}
-
-function drop( id )
-{
-    var form = $(this).parent();
-    reset(form);
-    
-    if(!confirm('Are you sure ?')) {
-        return false;
-    }
-    
-    $.ajax({type: 'DELETE', url: '/books/delete?id=' + id}).done(function(list) {
-        $("#books").remove();
-        $("#list").prepend(list);
-    });
-}
 
 function registerEvents()
 {
@@ -36,20 +10,36 @@ function registerEvents()
         reset(form);
     });
     
-    $('form').submit(function(event) {
+    $('form[id="Cazador"]').submit(function(event) {
         event.preventDefault();
         var form = $(this);
         var blockData = form.serialize();
         
-        $.ajax({type: 'PUT', url: '/books/update?id=' + EDIT, data: blockData}).done( function(book) {
+        $.ajax({type: 'PUT', url: '/speedDating/update?id=' + EDIT, data: blockData}).done( function(cazador) {
             if(EDIT === undefined) {
-               $("#books").append(book);
+               $("#books").append(cazador);
             } else {
-               $("#books li a")[book.index].text = book.name;
+               $("#books li a")[cazador.index].text = cazador.nombre;
             }
             reset(form);
         });
     });
+
+    $('form[id="Proyecto"]').submit(function(event) {
+        event.preventDefault();
+        var form = $(this);
+        var blockData = form.serialize();
+        
+        $.ajax({type: 'PUT', url: '/speedDating/EnviarProyecto?id=' + EDIT, data: blockData}).done( function(proyecto) {
+            if(EDIT === undefined) {
+               $("#books").append(proyecto);
+            } else {
+               $("#books li a")[proyecto.index].text = proyecto.Nombre;
+            }
+            reset(form);
+        });
+    });
+
 }
 
 function reset( form )
