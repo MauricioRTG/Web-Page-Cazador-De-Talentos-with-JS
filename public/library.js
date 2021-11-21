@@ -45,7 +45,7 @@ function registerEvents()
             if(EDIT === undefined) {
                $("#books").append(book);
             } else {
-               $("#books li a")[book.index].text = book.title;
+               $("#books li a")[book.index].text = book.name;
             }
             reset(form);
         });

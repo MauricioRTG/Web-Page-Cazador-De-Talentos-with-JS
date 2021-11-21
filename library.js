@@ -199,11 +199,11 @@ var USUARIO = (function(){
 
     return{
         getCazadores: function() { return cazadores; },
-        addCazadores: function(b) { cazadores.push(a); },
+        addCazadores: function(a) { cazadores.push(a); return a;},
         getTalentos: function() { return talentos; },
-        addTalentos: function(b) { talentos.push(a); },
+        addTalentos: function(a) { talentos.push(a); },
         getProyectos: function() { return talentos; },
-        addProyectos: function(b) { talentos.push(a); },
+        addProyectos: function(a) { talentos.push(a); },
     }
 })();
 
@@ -596,16 +596,14 @@ function showSubject( s )
 
 function update( request )
 {
-    var t = request.body.book.title;
-    var p = request.body.book.price;
-    var s = LIBRARY.getSubjects()[request.body.book.subject];
-    var d = request.body.book.description;
+    var n = request.body.book.Nombre;
+    var c = request.body.book.correo;
+    var con = request.body.book.contrasena;
+    var e = request.body.book.Empresa;
+    var d = request.body.book.Direccion;
     
     if( request.query.id === "undefined" ) {
-        LIBRARY.add(BOOK(t, p, s, d));
-        return listBook(LIBRARY.getBook(t));
-    } else {
-        LIBRARY.getBook(request.query.id).updateBook(t, p, s, d);
-        return LIBRARY.getPosition(request.query.id);
+       return USUARIO.addCazadores(CAZADOR(n, c, con, e, d));
+        
     }
 }
