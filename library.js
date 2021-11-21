@@ -201,9 +201,9 @@ var USUARIO = (function(){
         getCazadores: function() { return cazadores; },
         addCazadores: function(a) { cazadores.push(a); return a;},
         getTalentos: function() { return talentos; },
-        addTalentos: function(a) { talentos.push(a); },
-        getProyectos: function() { return talentos; },
-        addProyectos: function(a) { talentos.push(a); },
+        addTalentos: function(a) { talentos.push(a); return a},
+        getProyectos: function() { return talentos;},
+        addProyectos: function(a) { talentos.push(a); return a },
     }
 })();
 
