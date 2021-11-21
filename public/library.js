@@ -10,7 +10,7 @@ function registerEvents()
         reset(form);
     });
     
-    $('form[id="Cazador"]').submit(function(event) {
+    $('#Cazador').submit(function(event) {
         event.preventDefault();
         var form = $(this);
         var blockData = form.serialize();
@@ -25,7 +25,7 @@ function registerEvents()
         });
     });
 
-    $('form[id="Proyecto"]').submit(function(event) {
+    $('#Proyecto').submit(function(event) {
         event.preventDefault();
         var form = $(this);
         var blockData = form.serialize();

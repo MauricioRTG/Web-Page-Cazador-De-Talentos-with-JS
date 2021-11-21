@@ -508,8 +508,8 @@ function update( request )
 
 function updateProyecto( request )
 {
-    var n = request.body.proyecto.nombre;
-    var d = request.body.proyecto.description;
+    var n = request.body.proyecto.Nombre;
+    var d = request.body.proyecto.descripcion;
     var nu = request.body.proyecto.numero_tarjeta;
     var c = request.body.proyecto.codigo;
     
